@@ -3,37 +3,36 @@ $(function () {
     console.log("===:> NextDocs :<===");
 
     var currentUrl = window.location.href;
-    updateSideToc();
-    appendSection(currentUrl);
+    updateDom(currentUrl);
 
-    function updateSideToc() {
+    function updateDom(currentUrl) {
         var $sideToc = $("#side-doc-outline");
-
-        var $relatedTopicsToc = generateToc("Related topics");
-        var $mentionedByToc = generateToc("Mentioned by");
-
-        $sideToc.append($relatedTopicsToc).append($mentionedByToc);
-    }
-
-    function appendSection(currentUrl) {
         var relatedApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/topics/related?url=${currentUrl}`;
         var mentionedApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/topics/mentioned?url=${currentUrl}`;
         $.when(
             $.get(relatedApiUrl, "json"),
             $.get(mentionedApiUrl, "json")
-        ).done((relatedData, mentionedData) => {
-            var $commentsContainer = $("#comments-container");
+        ).done(updateDomCore);
+    }
 
-            if (relatedData != null && relatedData[0].items.length !== 0) {
-                var $relatedTopics = generateTopics("Related topics", relatedData[0].items);
-                $commentsContainer.before($relatedTopics);
-            }
+    function updateDomCore(relatedData, mentionedData) {
+        var $commentsContainer = $("#comments-container");
 
-            if (mentionedData != null && mentionedData[0].items.length !== 0) {
-                var $mentionedBy = generateTopics("Mentioned by", mentionedData[0].items);
-                $commentsContainer.before($mentionedBy);
-            }
-        });
+        if (relatedData != null && relatedData[0].items.length !== 0) {
+            var $relatedTopicsToc = generateToc("Related topics");
+            $sideToc.append($relatedTopicsToc)
+
+            var $relatedTopics = generateTopics("Related topics", relatedData[0].items);
+            $commentsContainer.before($relatedTopics);
+        }
+
+        if (mentionedData != null && mentionedData[0].items.length !== 0) {
+            var $mentionedByToc = generateToc("Mentioned by");
+            $sideToc.append($mentionedByToc);
+
+            var $mentionedBy = generateTopics("Mentioned by", mentionedData[0].items);
+            $commentsContainer.before($mentionedBy);
+        }
     }
 
     function generateToc(category) {
