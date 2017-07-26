@@ -1,9 +1,8 @@
 $(function () {
     "use stict";
-    console.log("===:> nextdocs :<===");
+    console.log("===:> NextDocs :<===");
 
-    // test url
-    var currentUrl = "https://only-for-testing.html";
+    var currentUrl = window.location.href;
     updateSideToc();
     appendSection(currentUrl);
 
@@ -27,7 +26,7 @@ $(function () {
 
             if (relatedData != null && relatedData[0].items.length !== 0) {
                 var $relatedTopics = generateTopics("Related topics", relatedData[0].items);
-                $commentsContainer.before($relatedTopics)
+                $commentsContainer.before($relatedTopics);
             }
 
             if (mentionedData != null && mentionedData[0].items.length !== 0) {
