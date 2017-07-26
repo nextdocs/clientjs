@@ -15,14 +15,17 @@ $(function () {
     }
 
     function appendSection() {
-        var relatedTopics = getRelatedTopics();
-        var $relatedTopics = generateTopics("Related topics", relatedTopics);
+        var apiUrl = "https://nextdocs-webapi.azurewebsites.net/api/topics/related?url=https://only-for-testing.html";
+        $.get(apiUrl, data => {
+            var relatedTopics = JSON.parse(data);
+            var $relatedTopics = generateTopics("Related topics", relatedTopics);
 
-        var mentionedByTopics = getMentionedByTopics();
-        var $mentionedBy = generateTopics("Mentioned by", mentionedByTopics);
+            var mentionedByTopics = JSON.parse(data);
+            var $mentionedBy = generateTopics("Mentioned by", mentionedByTopics);
 
-        var $commentsContainer = $("#comments-container");
-        $commentsContainer.before($relatedTopics).before($mentionedBy);
+            var $commentsContainer = $("#comments-container");
+            $commentsContainer.before($relatedTopics).before($mentionedBy);
+        }, "text");
     }
 
     function generateToc(category) {
@@ -44,33 +47,5 @@ $(function () {
 
     function computeId(name) {
         return name.replace(" ", "_").toLowerCase();
-    }
-
-    function getRelatedTopics() {
-        // mock
-        return [
-            {
-                "title": "first item",
-                "url": "https://github.com"
-            },
-            {
-                "title": "second item",
-                "url": "https://github.com"
-            }
-        ];
-    }
-
-    function getMentionedByTopics() {
-        // mock
-        return [
-            {
-                "title": "item 1",
-                "url": "https://github.com/nextdocs"
-            },
-            {
-                "title": "item 2",
-                "url": "https://github.com/nextdocs"
-            }
-        ]
     }
 });
