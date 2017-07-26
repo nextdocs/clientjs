@@ -2,8 +2,10 @@ $(function () {
     "use stict";
     console.log("===:> nextdocs :<===");
 
+    // test url
+    var currentUrl = "https://only-for-testing.html";
     updateSideToc();
-    appendSection();
+    appendSection(currentUrl);
 
     function updateSideToc() {
         var $sideToc = $("#side-doc-outline");
@@ -14,18 +16,25 @@ $(function () {
         $sideToc.append($relatedTopicsToc).append($mentionedByToc);
     }
 
-    function appendSection() {
-        var apiUrl = "https://nextdocs-webapi.azurewebsites.net/api/topics/related?url=https://only-for-testing.html";
-        $.get(apiUrl, data => {
-            var relatedTopics = JSON.parse(data);
-            var $relatedTopics = generateTopics("Related topics", relatedTopics);
-
-            var mentionedByTopics = JSON.parse(data);
-            var $mentionedBy = generateTopics("Mentioned by", mentionedByTopics);
-
+    function appendSection(currentUrl) {
+        var relatedApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/topics/related?url=${currentUrl}`;
+        var mentionedApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/topics/mentioned?url=${currentUrl}`;
+        $.when(
+            $.get(relatedApiUrl, "json"),
+            $.get(mentionedApiUrl, "json")
+        ).done((relatedData, mentionedData) => {
             var $commentsContainer = $("#comments-container");
-            $commentsContainer.before($relatedTopics).before($mentionedBy);
-        }, "text");
+
+            if (relatedData != null && relatedData[0].items.length !== 0) {
+                var $relatedTopics = generateTopics("Related topics", relatedData[0].items);
+                $commentsContainer.before($relatedTopics)
+            }
+
+            if (mentionedData != null && mentionedData[0].items.length !== 0) {
+                var $mentionedBy = generateTopics("Mentioned by", mentionedData[0].items);
+                $commentsContainer.before($mentionedBy);
+            }
+        });
     }
 
     function generateToc(category) {
