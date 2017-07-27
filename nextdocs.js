@@ -58,7 +58,7 @@ $(function () {
     }
 
     function generateTopics(category, topics) {
-        var title = `<h1 id='${computeId(category)}'>${category}</h1>`;
+        var title = `<h2 id='${computeId(category)}'>${category}</h2>`;
 
         var items = topics.map(topic => {
             return `<a href="${topic.url}">${topic.title || topic.url}</a>`
