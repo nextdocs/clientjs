@@ -36,7 +36,7 @@ $(function () {
         var $sideToc = $("#side-doc-outline");
         var $commentsContainer = $("#comments-container");
 
-        if (relatedData != null && relatedData.items.length !== 0) {
+        if (relatedData && relatedData.items.length !== 0) {
             var $relatedTopicsToc = generateToc("Related topics");
             $sideToc.append($relatedTopicsToc)
 
@@ -44,7 +44,7 @@ $(function () {
             $commentsContainer.before($relatedTopics);
         }
 
-        if (mentionedData != null && mentionedData.items.length !== 0) {
+        if (mentionedData && mentionedData.items.length !== 0) {
             var $mentionedByToc = generateToc("Mentioned by");
             $sideToc.append($mentionedByToc);
 
