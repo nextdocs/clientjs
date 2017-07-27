@@ -48,7 +48,7 @@ $(function () {
             var $mentionedByToc = generateToc("Mentioned by");
             $sideToc.append($mentionedByToc);
 
-            var $mentionedBy = generateTopics("Mentioned by", mentionedData.items);
+            var $mentionedBy = generateTopics("Mentioned by", mentionedData.items, false);
             $commentsContainer.before($mentionedBy);
         }
     }
@@ -57,11 +57,15 @@ $(function () {
         return `<h3 style='display: block;'><a href='#${computeId(category)}'>${category}</a></h3>`;
     }
 
-    function generateTopics(category, topics) {
+    function generateTopics(category, topics, isInternal = true) {
         var title = `<h2 id='${computeId(category)}'>${category}</h2>`;
 
         var items = topics.map(topic => {
-            return `<a href="${topic.url}">${topic.title || topic.url}</a>`
+            if (isInternal) {
+                return `<a href="${topic.url}">${topic.title || topic.url}</a>`
+            } else {
+                return `<a href="${topic.url}" target="_blank">${topic.title || topic.url}</a>`
+            }
         });
 
         var content = `<p>${items.join("<br/>")}</p>`;
