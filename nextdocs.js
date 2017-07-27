@@ -58,16 +58,16 @@ $(function () {
     }
 
     function generateTopics(category, topics) {
-        var $category = $(`<h3 style='display: block;' id='${computeId(category)}'>${category}</div>`);
-        var $topics = $("<ol></ol>");
+        var title = `<h1 id='${computeId(category)}'>${category}</h1>`;
 
-        for (var topic of topics) {
-            var $item = $(`<li><a href="${topic.url}">${topic.title || topic.url}</a></li>`);
-            $topics.append($item);
-        }
+        var items = topics.map(topic => {
+            return `<a href="${topic.url}">${topic.title || topic.url}</a>`
+        });
 
-        $category.append($topics);
-        return $category;
+        var content = `<p>${items.join("<br/>")}</p>`;
+        var $section = $(title + content);
+
+        return $section;
     }
 
     function computeId(name) {
