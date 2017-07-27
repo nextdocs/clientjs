@@ -40,7 +40,7 @@ $(function () {
             var $relatedTopicsToc = generateToc("Related topics");
             $sideToc.append($relatedTopicsToc)
 
-            var $relatedTopics = generateTopics("Related topics", relatedData[0].items);
+            var $relatedTopics = generateTopics("Related topics", relatedData.items);
             $commentsContainer.before($relatedTopics);
         }
 
