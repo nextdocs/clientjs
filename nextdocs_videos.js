@@ -17,9 +17,8 @@ $(function () {
     function getCurrentUrl() {
         var parser = document.createElement("a");
         parser.href = window.location.href;
-        if (parser.hostname.startsWith("review.")) {
-            parser.hostname = parser.hostname.slice("review.".length);
-        }
+        parser.hostname = parser.hostname.replace("review.docs.microsoft.com", "docs.microsoft.com");
+        parser.pathname = parser.pathname.replace("e2eprod-azure-documents", "azure");
 
         return `${parser.hostname}${parser.pathname}`;
     }
