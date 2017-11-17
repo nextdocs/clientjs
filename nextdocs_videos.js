@@ -28,6 +28,16 @@ $(function () {
     }
 
     function handleDoneAjax(data) {
+        if (data && data.items.length !== 0) {
+            if (data.items.length > 5) {
+                data.items = data.items.slice(0, 5);
+            }
+
+            for (var i = 0; i < data.items.length; i++) {
+                data.items[i] = data.items[i].replace("docs.microsoft.com/azure/", "docs.microsoft.com/e2eprod-azure-documents/")
+            }
+        }
+
         return data;
     }
 
