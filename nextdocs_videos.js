@@ -33,8 +33,9 @@ $(function () {
                 data.items = data.items.slice(0, 5);
             }
 
-            for (var i = 0; i < data.items.length; i++) {
-                data.items[i] = data.items[i].replace("docs.microsoft.com/azure/", "docs.microsoft.com/e2eprod-azure-documents/")
+            for (var item of data.items) {
+                item.url = item.url.replace("/en-us/azure/", "/en-us/e2eprod-azure-documents/");
+                item.title = item.title.replace("| Microsoft Docs", "");
             }
         }
 
