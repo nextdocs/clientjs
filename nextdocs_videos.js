@@ -73,9 +73,9 @@ $(function () {
         var items = topics.map(topic => {
             if (isInternal) {
                 topic.url = topic.url.replace("https://docs.microsoft.com", "https://review.docs.microsoft.com");
-                return `<a href="${topic.url}">${topic.title || topic.url}</a>`
+                return `<a href="${topic.url}">${topic.title || topic.url} [${topic.similarity.toPrecision(3)}]</a>`
             } else {
-                return `<a href="${topic.url}" target="_blank">${topic.title || topic.url}</a>`
+                return `<a href="${topic.url}" target="_blank">${topic.title || topic.url} [${topic.similarity.toPrecision(3)}]</a>`
             }
         });
 
@@ -84,6 +84,7 @@ $(function () {
 
         return $section;
     }
+
 
     function computeId(name) {
         return name.replace(" ", "_").toLowerCase();
