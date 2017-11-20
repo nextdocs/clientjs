@@ -65,10 +65,10 @@ $(function () {
         }
 
         if (dareTopics && dareTopics.items.length !== 0) {
-            var $dareTopicsToc = generateToc("Dare topics");
+            var $dareTopicsToc = generateToc("Users also read");
             $sideToc.append($dareTopicsToc)
 
-            var $dareTopics = generateTopics("Dare topics", dareTopics.items);
+            var $dareTopics = generateTopics("Users also read", dareTopics.items);
             $commentsContainer.before($dareTopics);
         }
     }
