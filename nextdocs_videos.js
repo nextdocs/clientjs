@@ -8,9 +8,11 @@ $(function () {
     function updateDom(currentUrl) {
         var relatedTopicsApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/azure/related/topics?url=${currentUrl}`;
         var relatedVideosApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/azure/related/videos?url=${currentUrl}`;
+        var dareTopicsApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/azure/dare/topics?url=${currentUrl}`;
         $.when(
             $.get(relatedTopicsApiUrl).then(handleDoneAjax, handleFailAjax),
-            $.get(relatedVideosApiUrl).then(handleDoneAjax, handleFailAjax)
+            $.get(relatedVideosApiUrl).then(handleDoneAjax, handleFailAjax),
+            $.get(dareTopicsApiUrl).then(handleDoneAjax, handleFailAjax)
         ).then(updateDomCore);
     }
 
@@ -42,24 +44,32 @@ $(function () {
         return data;
     }
 
-    function updateDomCore(relatedData, mentionedData) {
+    function updateDomCore(relatedTopics, relatedVideos, dareTopics) {
         var $sideToc = $("#side-doc-outline");
         var $commentsContainer = $("#comments-container");
 
-        if (relatedData && relatedData.items.length !== 0) {
+        if (relatedTopics && relatedTopics.items.length !== 0) {
             var $relatedTopicsToc = generateToc("Related topics");
             $sideToc.append($relatedTopicsToc)
 
-            var $relatedTopics = generateTopics("Related topics", relatedData.items);
+            var $relatedTopics = generateTopics("Related topics", relatedTopics.items);
             $commentsContainer.before($relatedTopics);
         }
 
-        if (mentionedData && mentionedData.items.length !== 0) {
-            var $mentionedByToc = generateToc("Related videos");
-            $sideToc.append($mentionedByToc);
+        if (relatedVideos && relatedVideos.items.length !== 0) {
+            var $relatedVideosToc = generateToc("Related videos");
+            $sideToc.append($relatedVideosToc);
 
-            var $mentionedBy = generateTopics("Related videos", mentionedData.items, false);
-            $commentsContainer.before($mentionedBy);
+            var $relatedVideos = generateTopics("Related videos", relatedVideos.items, false);
+            $commentsContainer.before($relatedVideos);
+        }
+
+        if (dareTopics && dareTopics.items.length !== 0) {
+            var $dareTopicsToc = generateToc("Dare topics");
+            $sideToc.append($dareTopicsToc)
+
+            var $dareTopics = generateTopics("Dare topics", dareTopics.items);
+            $commentsContainer.before($dareTopics);
         }
     }
 
