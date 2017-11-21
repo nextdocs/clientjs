@@ -88,11 +88,13 @@ $(function () {
         var title = `<h2 id='${computeId(category)}'>${category}</h2>`;
 
         var items = topics.map(topic => {
-            if (isInternal) {
+            if (topic.similarity === 0) {
+                return `<a href="${topic.url}">${topic.title || topic.url}</a>`
+            } else if (isInternal) {
                 topic.url = topic.url.replace("https://docs.microsoft.com", "https://review.docs.microsoft.com");
-                return `<a href="${topic.url}">${topic.title || topic.url} [${topic.similarity.toPrecision(3)}]</a>`
+                return `<a href="${topic.url}">${topic.title || topic.url} [Similarity: ${topic.similarity.toPrecision(3)}]</a>`
             } else {
-                return `<a href="${topic.url}" target="_blank">${topic.title || topic.url} [${topic.similarity.toPrecision(3)}]</a>`
+                return `<a href="${topic.url}" target="_blank">${topic.title || topic.url} [Similarity: ${topic.similarity.toPrecision(3)}]</a>`
             }
         });
 
