@@ -36,7 +36,8 @@ $(function () {
             }
 
             for (var item of data.items) {
-                item.url = item.url.replace("/en-us/azure/", "/en-us/e2eprod-azure-documents/");
+                item.url = item.url.replace("/docs.microsoft.com/en-us", "/review.docs.microsoft.com/en-us");
+                item.url = item.url.replace("/en-us/azure/azure-docs-pr", "/en-us/e2eprod-azure-documents/");
                 item.title = item.title.replace("| Microsoft Docs", "");
             }
         }
@@ -67,7 +68,7 @@ $(function () {
             var $relatedVideosToc = generateToc("Related videos");
             $sideToc.append($relatedVideosToc);
 
-            var $relatedVideos = generateTopics("Related videos", relatedVideos.items, false);
+            var $relatedVideos = generateVideos("Related videos", relatedVideos.items, false);
             $commentsContainer.before($relatedVideos);
         }
 
@@ -104,6 +105,21 @@ $(function () {
         return $section;
     }
 
+    function generateVideos(category, vidoes, isInternal = true) {
+        var title = `<h2 id='${computeId(category)}'>${category}</h2>`;
+
+        var items = vidoes.map(video => {
+            return `<a style="margin-right: 15px; vertical-align: top; display: inline-block; max-width: 256px;" href="${video.url}"
+            target="_blank">
+            <img tabindex="0" style="max-width: 256px;" alt="${video.title}" src="${video.pic_url}">
+            <br>${video.title}[Similarity: ${video.similarity.toPrecision(3)}]</a>`
+        });
+
+        var content = `<p>${items.join("")}</p>`;
+        var $section = $(title + content);
+
+        return $section;
+    }
 
     function computeId(name) {
         return name.replace(" ", "_").toLowerCase();
