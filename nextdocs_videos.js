@@ -11,7 +11,7 @@ $(function () {
         var dareTopicsApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/azure/dare/topics?url=${currentUrl}`;
         $.when(
             $.get(relatedTopicsApiUrl).then(handleDoneAjax, handleFailAjax),
-            $.get(relatedVideosApiUrl).then(handleDoneAjax, handleFailAjax),
+            $.get(relatedVideosApiUrl).then(handleVideoDoneAjax, handleFailAjax),
             $.get(dareTopicsApiUrl).then(handleDoneAjax, handleFailAjax)
         ).then(updateDomCore);
     }
@@ -43,6 +43,20 @@ $(function () {
         }
 
         return data;
+    }
+
+    function handleVideoDoneAjax(data) {
+        if (data && data.items.length !== 0) {
+            data.items = data.items.filter(item => {
+                if (item.pic_url) {
+                    return !item.pic_url.startsWith("http://files.channel9.msdn.com/");
+                }
+
+                return false;
+            });
+        }
+
+        return handleDoneAjax(data);
     }
 
     function updateDomCore(relatedTopics, relatedVideos, dareTopics) {
@@ -110,7 +124,7 @@ $(function () {
         var title = `<h2 id='${computeId(category)}'>${category}</h2>`;
 
         var items = vidoes.map(video => {
-            return `<a style="margin-right: 15px; vertical-align: top; display: inline-block; max-width: 256px;" href="${video.url}"
+            return `<a style="margin-right: 15px; margin-top: 15px; vertical-align: top; display: inline-block; max-width: 256px;" href="${video.url}"
             target="_blank">
             <img tabindex="0" style="max-width: 256px;" src="${video.pic_url}">
             <br>${video.title}[Similarity: ${video.similarity.toPrecision(3)}]</a>`
