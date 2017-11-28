@@ -7,11 +7,9 @@ $(function () {
 
     function updateDom(currentUrl) {
         var relatedApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/topics/related?url=${currentUrl}`;
-        var mentionedApiUrl = `https://nextdocs-webapi.azurewebsites.net/api/topics/mentioned?url=${currentUrl}`;
-        $.when(
-            $.get(relatedApiUrl).then(handleDoneAjax, handleFailAjax),
-            $.get(mentionedApiUrl).then(handleDoneAjax, handleFailAjax)
-        ).then(updateDomCore);
+        $.get(relatedApiUrl)
+            .then(handleDoneAjax, handleFailAjax)
+            .then(updateDomCore);
     }
 
     function getCurrentUrl() {
@@ -32,7 +30,7 @@ $(function () {
         return data;
     }
 
-    function updateDomCore(relatedData, mentionedData) {
+    function updateDomCore(relatedData) {
         var $sideToc = $("#side-doc-outline");
         var $commentsContainer = $("#comments-container");
 
@@ -42,14 +40,6 @@ $(function () {
 
             var $relatedTopics = generateTopics("Related topics", relatedData.items);
             $commentsContainer.before($relatedTopics);
-        }
-
-        if (mentionedData && mentionedData.items.length !== 0) {
-            var $mentionedByToc = generateToc("Mentioned by");
-            $sideToc.append($mentionedByToc);
-
-            var $mentionedBy = generateTopics("Mentioned by", mentionedData.items, false);
-            $commentsContainer.before($mentionedBy);
         }
     }
 
