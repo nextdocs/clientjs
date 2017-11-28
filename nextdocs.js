@@ -34,6 +34,13 @@ $(function () {
         var $sideToc = $("#side-doc-outline");
         var $commentsContainer = $("#comments-container");
 
+        $commentsContainer.before(`
+        <hr/>
+        <p style="margin-top: 30px;">
+            <img style="vertical-align: middle; max-width: 24px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGlSURBVFhH7ZW/SsRAEMYjWohvIBZWkqS219LKQntBEGsLC8vdnGdhZ2HtA5ydTXaDeIVaCL6BjSA2in+wE4s4szsrYcnu5Y6sVX4whPt2Z+ebIbeJOjomYZUNZxIuHyDeUiZ5NBhM09L/EDO5nXJZViKjpfCY7rFwwuSZNiCeaTk8pns0gWZoAiUth6XaPRpJ+vm8MsDkC20Ji919wvJNMlDQlnDY3aOWMHGiDYkDtSkkdveoQef3ylBWrKlNbaBG6gnTPQIGvur22AH/lneY0lGj+6LugGqY7hfZcLZu3RtM9FQRH2Yz/fzDpTcBJrWi88UrSW5CGFjqXy6ofCY+SXITwkCcyXVtQF6R5CaEAXgBDzEXnsckuQlhAC8qZSCTGyS5ad1AWU5B5x/KAFzdpLpp20Dcy2NVnMsnkvy0bSDl+ZY2IM5J8tO6ASZOMS/mYp8kP9VC8LyFA25sfRxg9HcqFy4jkvxUC8HYrjFsvSl4XYOBbzjjZ5ldzJHsx1VobAP67d/FHJwCqaMxhVqOHTp+NDXJEwd8hh9TXuzR0R0dNUTRL4BR+3g3embwAAAAAElFTkSuQmCC">
+            <span style="line-height: 22px; margin-left: 5px; vertical-align: middle;">Recommended by Docs</span>
+        </p>`);
+        
         if (relatedData && relatedData.items.length !== 0) {
             var $relatedTopicsToc = generateToc("Related topics");
             $sideToc.append($relatedTopicsToc)
