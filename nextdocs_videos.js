@@ -88,10 +88,10 @@ $(function () {
         }
 
         if (dareTopics && dareTopics.items.length !== 0) {
-            var $dareTopicsToc = generateToc("Users also read");
+            var $dareTopicsToc = generateToc("DARE model");
             $sideToc.append($dareTopicsToc)
 
-            var $dareTopics = generateTopics("Users also read", dareTopics.items);
+            var $dareTopics = generateTopics("DARE model", dareTopics.items);
             $commentsContainer.before($dareTopics);
         }
     }
